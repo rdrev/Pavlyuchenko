@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ПавлюченкоModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Заказы">
+    <Key>
+      <PropertyRef Name="КодЗаказа" />
+    </Key>
+    <Property Name="КодЗаказа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Посылка" Type="Int32" Nullable="false" />
+    <Property Name="Клиент" Type="Int32" Nullable="false" />
+    <Property Name="Утверждено" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Клиенты" Relationship="Self.FK_Заказы_Клиенты" FromRole="Заказы" ToRole="Клиенты" />
+    <NavigationProperty Name="Посылки" Relationship="Self.FK_Заказы_Посылки" FromRole="Заказы" ToRole="Посылки" />
+    <NavigationProperty Name="Маршруты" Relationship="Self.FK_Маршруты_Заказы" FromRole="Заказы" ToRole="Маршруты" />
+  </EntityType>
+  <EntityType Name="Клиенты">
+    <Key>
+      <PropertyRef Name="КодКлиент" />
+    </Key>
+    <Property Name="КодКлиент" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Пользователь" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Заказы" Relationship="Self.FK_Заказы_Клиенты" FromRole="Клиенты" ToRole="Заказы" />
+    <NavigationProperty Name="Пользователи" Relationship="Self.FK_Клиенты_Пользователи" FromRole="Клиенты" ToRole="Пользователи" />
+  </EntityType>
+  <EntityType Name="Маршруты">
+    <Key>
+      <PropertyRef Name="КодМаршрута" />
+    </Key>
+    <Property Name="КодМаршрута" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Заказ" Type="Int32" Nullable="false" />
+    <Property Name="Транспорт" Type="Int32" Nullable="false" />
+    <Property Name="НомерЭтапа" Type="Int32" Nullable="false" />
+    <Property Name="НачальныйАдрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="КонечныйАдрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Выполнено" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Заказы" Relationship="Self.FK_Маршруты_Заказы" FromRole="Маршруты" ToRole="Заказы" />
+    <NavigationProperty Name="Транспорты" Relationship="Self.FK_Маршруты_Транспорты" FromRole="Маршруты" ToRole="Транспорты" />
+  </EntityType>
+  <EntityType Name="Пользователи">
+    <Key>
+      <PropertyRef Name="КодПользователя" />
+    </Key>
+    <Property Name="КодПользователя" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ФИО" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Логин" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Пароль" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Роль" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Клиенты" Relationship="Self.FK_Клиенты_Пользователи" FromRole="Пользователи" ToRole="Клиенты" />
+    <NavigationProperty Name="Роли" Relationship="Self.FK_Пользователи_Роль" FromRole="Пользователи" ToRole="Роли" />
+    <NavigationProperty Name="Транспорты" Relationship="Self.FK_Транспорты_Пользователи" FromRole="Пользователи" ToRole="Транспорты" />
+  </EntityType>
+  <EntityType Name="Посылки">
+    <Key>
+      <PropertyRef Name="КодПосылки" />
+    </Key>
+    <Property Name="КодПосылки" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Склад" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Количество" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Заказы" Relationship="Self.FK_Заказы_Посылки" FromRole="Посылки" ToRole="Заказы" />
+  </EntityType>
+  <EntityType Name="Роли">
+    <Key>
+      <PropertyRef Name="КодРоли" />
+    </Key>
+    <Property Name="КодРоли" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Пользователи" Relationship="Self.FK_Пользователи_Роль" FromRole="Роли" ToRole="Пользователи" />
+  </EntityType>
+  <EntityType Name="Транспорты">
+    <Key>
+      <PropertyRef Name="КодТранспорта" />
+    </Key>
+    <Property Name="КодТранспорта" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Водитель" Type="Int32" Nullable="false" />
+    <Property Name="Номер" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ВидТранспорта" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Маршруты" Relationship="Self.FK_Маршруты_Транспорты" FromRole="Транспорты" ToRole="Маршруты" />
+    <NavigationProperty Name="Пользователи" Relationship="Self.FK_Транспорты_Пользователи" FromRole="Транспорты" ToRole="Пользователи" />
+  </EntityType>
+  <Association Name="FK_Заказы_Клиенты">
+    <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="1" />
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Клиенты">
+        <PropertyRef Name="КодКлиент" />
+      </Principal>
+      <Dependent Role="Заказы">
+        <PropertyRef Name="Клиент" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Заказы_Посылки">
+    <End Role="Посылки" Type="Self.Посылки" Multiplicity="1" />
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Посылки">
+        <PropertyRef Name="КодПосылки" />
+      </Principal>
+      <Dependent Role="Заказы">
+        <PropertyRef Name="Посылка" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Маршруты_Заказы">
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="1" />
+    <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Заказы">
+        <PropertyRef Name="КодЗаказа" />
+      </Principal>
+      <Dependent Role="Маршруты">
+        <PropertyRef Name="Заказ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Клиенты_Пользователи">
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="1" />
+    <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Пользователи">
+        <PropertyRef Name="КодПользователя" />
+      </Principal>
+      <Dependent Role="Клиенты">
+        <PropertyRef Name="Пользователь" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Маршруты_Транспорты">
+    <End Role="Транспорты" Type="Self.Транспорты" Multiplicity="1" />
+    <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Транспорты">
+        <PropertyRef Name="КодТранспорта" />
+      </Principal>
+      <Dependent Role="Маршруты">
+        <PropertyRef Name="Транспорт" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Пользователи_Роль">
+    <End Role="Роли" Type="Self.Роли" Multiplicity="1" />
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Роли">
+        <PropertyRef Name="КодРоли" />
+      </Principal>
+      <Dependent Role="Пользователи">
+        <PropertyRef Name="Роль" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Транспорты_Пользователи">
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="1" />
+    <End Role="Транспорты" Type="Self.Транспорты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Пользователи">
+        <PropertyRef Name="КодПользователя" />
+      </Principal>
+      <Dependent Role="Транспорты">
+        <PropertyRef Name="Водитель" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ПавлюченкоEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Заказы" EntityType="Self.Заказы" />
+    <EntitySet Name="Клиенты" EntityType="Self.Клиенты" />
+    <EntitySet Name="Маршруты" EntityType="Self.Маршруты" />
+    <EntitySet Name="Пользователи" EntityType="Self.Пользователи" />
+    <EntitySet Name="Посылки" EntityType="Self.Посылки" />
+    <EntitySet Name="Роли" EntityType="Self.Роли" />
+    <EntitySet Name="Транспорты" EntityType="Self.Транспорты" />
+    <AssociationSet Name="FK_Заказы_Клиенты" Association="Self.FK_Заказы_Клиенты">
+      <End Role="Клиенты" EntitySet="Клиенты" />
+      <End Role="Заказы" EntitySet="Заказы" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Заказы_Посылки" Association="Self.FK_Заказы_Посылки">
+      <End Role="Посылки" EntitySet="Посылки" />
+      <End Role="Заказы" EntitySet="Заказы" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Маршруты_Заказы" Association="Self.FK_Маршруты_Заказы">
+      <End Role="Заказы" EntitySet="Заказы" />
+      <End Role="Маршруты" EntitySet="Маршруты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Клиенты_Пользователи" Association="Self.FK_Клиенты_Пользователи">
+      <End Role="Пользователи" EntitySet="Пользователи" />
+      <End Role="Клиенты" EntitySet="Клиенты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Маршруты_Транспорты" Association="Self.FK_Маршруты_Транспорты">
+      <End Role="Транспорты" EntitySet="Транспорты" />
+      <End Role="Маршруты" EntitySet="Маршруты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Пользователи_Роль" Association="Self.FK_Пользователи_Роль">
+      <End Role="Роли" EntitySet="Роли" />
+      <End Role="Пользователи" EntitySet="Пользователи" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Транспорты_Пользователи" Association="Self.FK_Транспорты_Пользователи">
+      <End Role="Пользователи" EntitySet="Пользователи" />
+      <End Role="Транспорты" EntitySet="Транспорты" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

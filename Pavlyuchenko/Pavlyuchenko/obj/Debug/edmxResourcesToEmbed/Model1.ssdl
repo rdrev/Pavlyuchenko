@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище ПавлюченкоModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Заказы">
+    <Key>
+      <PropertyRef Name="КодЗаказа" />
+    </Key>
+    <Property Name="КодЗаказа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Посылка" Type="int" Nullable="false" />
+    <Property Name="Клиент" Type="int" Nullable="false" />
+    <Property Name="Утверждено" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Клиенты">
+    <Key>
+      <PropertyRef Name="КодКлиент" />
+    </Key>
+    <Property Name="КодКлиент" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Адрес" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Пользователь" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Маршруты">
+    <Key>
+      <PropertyRef Name="КодМаршрута" />
+    </Key>
+    <Property Name="КодМаршрута" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Заказ" Type="int" Nullable="false" />
+    <Property Name="Транспорт" Type="int" Nullable="false" />
+    <Property Name="НомерЭтапа" Type="int" Nullable="false" />
+    <Property Name="НачальныйАдрес" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="КонечныйАдрес" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Выполнено" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Пользователи">
+    <Key>
+      <PropertyRef Name="КодПользователя" />
+    </Key>
+    <Property Name="КодПользователя" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ФИО" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Логин" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Пароль" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Роль" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Посылки">
+    <Key>
+      <PropertyRef Name="КодПосылки" />
+    </Key>
+    <Property Name="КодПосылки" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Название" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Склад" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Количество" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Роли">
+    <Key>
+      <PropertyRef Name="КодРоли" />
+    </Key>
+    <Property Name="КодРоли" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Название" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Транспорты">
+    <Key>
+      <PropertyRef Name="КодТранспорта" />
+    </Key>
+    <Property Name="КодТранспорта" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Водитель" Type="int" Nullable="false" />
+    <Property Name="Номер" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ВидТранспорта" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Заказы_Клиенты">
+    <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="1" />
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Клиенты">
+        <PropertyRef Name="КодКлиент" />
+      </Principal>
+      <Dependent Role="Заказы">
+        <PropertyRef Name="Клиент" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Заказы_Посылки">
+    <End Role="Посылки" Type="Self.Посылки" Multiplicity="1" />
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Посылки">
+        <PropertyRef Name="КодПосылки" />
+      </Principal>
+      <Dependent Role="Заказы">
+        <PropertyRef Name="Посылка" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Клиенты_Пользователи">
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="1" />
+    <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Пользователи">
+        <PropertyRef Name="КодПользователя" />
+      </Principal>
+      <Dependent Role="Клиенты">
+        <PropertyRef Name="Пользователь" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Маршруты_Заказы">
+    <End Role="Заказы" Type="Self.Заказы" Multiplicity="1" />
+    <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Заказы">
+        <PropertyRef Name="КодЗаказа" />
+      </Principal>
+      <Dependent Role="Маршруты">
+        <PropertyRef Name="Заказ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Маршруты_Транспорты">
+    <End Role="Транспорты" Type="Self.Транспорты" Multiplicity="1" />
+    <End Role="Маршруты" Type="Self.Маршруты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Транспорты">
+        <PropertyRef Name="КодТранспорта" />
+      </Principal>
+      <Dependent Role="Маршруты">
+        <PropertyRef Name="Транспорт" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Пользователи_Роль">
+    <End Role="Роли" Type="Self.Роли" Multiplicity="1" />
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Роли">
+        <PropertyRef Name="КодРоли" />
+      </Principal>
+      <Dependent Role="Пользователи">
+        <PropertyRef Name="Роль" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Транспорты_Пользователи">
+    <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="1" />
+    <End Role="Транспорты" Type="Self.Транспорты" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Пользователи">
+        <PropertyRef Name="КодПользователя" />
+      </Principal>
+      <Dependent Role="Транспорты">
+        <PropertyRef Name="Водитель" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище ПавлюченкоModelContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Заказы" EntityType="Self.Заказы" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Клиенты" EntityType="Self.Клиенты" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Маршруты" EntityType="Self.Маршруты" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Пользователи" EntityType="Self.Пользователи" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Посылки" EntityType="Self.Посылки" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Роли" EntityType="Self.Роли" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Транспорты" EntityType="Self.Транспорты" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Заказы_Клиенты" Association="Self.FK_Заказы_Клиенты">
+      <End Role="Клиенты" EntitySet="Клиенты" />
+      <End Role="Заказы" EntitySet="Заказы" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Заказы_Посылки" Association="Self.FK_Заказы_Посылки">
+      <End Role="Посылки" EntitySet="Посылки" />
+      <End Role="Заказы" EntitySet="Заказы" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Клиенты_Пользователи" Association="Self.FK_Клиенты_Пользователи">
+      <End Role="Пользователи" EntitySet="Пользователи" />
+      <End Role="Клиенты" EntitySet="Клиенты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Маршруты_Заказы" Association="Self.FK_Маршруты_Заказы">
+      <End Role="Заказы" EntitySet="Заказы" />
+      <End Role="Маршруты" EntitySet="Маршруты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Маршруты_Транспорты" Association="Self.FK_Маршруты_Транспорты">
+      <End Role="Транспорты" EntitySet="Транспорты" />
+      <End Role="Маршруты" EntitySet="Маршруты" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Пользователи_Роль" Association="Self.FK_Пользователи_Роль">
+      <End Role="Роли" EntitySet="Роли" />
+      <End Role="Пользователи" EntitySet="Пользователи" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Транспорты_Пользователи" Association="Self.FK_Транспорты_Пользователи">
+      <End Role="Пользователи" EntitySet="Пользователи" />
+      <End Role="Транспорты" EntitySet="Транспорты" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
