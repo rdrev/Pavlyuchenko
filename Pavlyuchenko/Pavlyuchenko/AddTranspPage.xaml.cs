@@ -30,7 +30,7 @@ namespace Pavlyuchenko
 
             DataContext = транспорт;
 
-            CBP.ItemsSource = ПавлюченкоEntities.Get().Пользователи.ToList();
+            CBP.ItemsSource = ПавлюченкоEntities.Get().Пользователи.ToList().Where(p=> p.Роль == 3).ToList();
         }
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)

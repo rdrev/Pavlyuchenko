@@ -30,7 +30,7 @@ namespace Pavlyuchenko
 
             DataContext = this.заказ;
 
-            CBK.ItemsSource = ПавлюченкоEntities.Get().Клиенты.ToList();
+            CBK.ItemsSource = ПавлюченкоEntities.Get().Клиенты.ToList().Where(p=> p.Пользователи.Роль == 1).ToList();
             CBP.ItemsSource = ПавлюченкоEntities.Get().Посылки.ToList();
 
             if(пользовател.Роль == 1)
